@@ -41,8 +41,3 @@ A simple web app to merge and split PDF files.
 
 - Upload PDF files to merge or split.
 - Download the processed files.
-
-## License
-
-MIT License
-
