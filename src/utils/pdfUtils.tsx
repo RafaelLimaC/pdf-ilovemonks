@@ -53,3 +53,27 @@ export async function splitPDF(
 
   return totalPages;
 }
+
+export async function imgToPDF(img: File): Promise<Uint8Array> {
+  const imgBuffer = await img.arrayBuffer();
+  const pdf = await PDFDocument.create();
+
+  let imgData;
+  if (img.type === "image/png") {
+    imgData = await pdf.embedPng(imgBuffer);
+  } else if (img.type === "image/jpeg" || img.type === "image/jpg") {
+    imgData = await pdf.embedJpg(imgBuffer);
+  } else {
+    throw new Error("Formato de imagem não suportado!");
+  }
+
+  const page = pdf.addPage([imgData.width, imgData.height]);
+  page.drawImage(imgData, {
+    x: 0,
+    y: 0,
+    width: imgData.width,
+    height: imgData.height,
+  });
+
+  return pdf.save();
+}

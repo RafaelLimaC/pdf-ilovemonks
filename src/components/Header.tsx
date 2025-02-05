@@ -24,6 +24,15 @@ const Header = () => {
         >
           DIVIDIR PDF
         </Link>
+        <Link
+          to="/img-to-pdf"
+          className={`text-[14px] font-medium active:text-accent ${
+            location.pathname === "/img-to-pdf" ? "text-accent" : "text-[#161616]"
+          }`}
+        >
+          IMG PARA PDF
+        </Link>
+      
       </nav>
     </header>
   );

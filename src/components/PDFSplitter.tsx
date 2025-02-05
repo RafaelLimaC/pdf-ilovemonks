@@ -37,8 +37,8 @@ const PDFSplitter = () => {
   const handleSplit = async () => {
     if (!file) return;
 
-    if (!pageRange.match(/^\d+(-\d+)?(,\d+(-\d+)?)*$/)) {
-      toast.error("Formato inválido. Use: 1-3,5,7-9");
+    if (!pageRange.match(/^\d+(\s*-\s*\d+)?(\s*,\s*\d+(\s*-\s*\d+)?)*$/)) {
+      toast.error("Formato inválido. Use: 1-3, 5, 7-9");
       return;
     }
 
@@ -72,11 +72,11 @@ const PDFSplitter = () => {
             <Input
               value={pageRange}
               onChange={(e) => setPageRange(e.target.value)}
-              placeholder="Ex: 1-3,5,7-9"
+              placeholder="Ex: 1-3, 5, 7-9"
               className="w-full ring-red-400 placeholder:text-gray-600"
             />
             <p className="text-xs text-gray-500">
-              Use vírgulas para separar páginas ou intervalos (ex: 1-3,5,7-9).
+              Use vírgulas para separar páginas ou intervalos (ex: 1-3, 5, 7-9).
               Caso queira apenas uma página, coloque apenas o número dela.
             </p>
           </div>

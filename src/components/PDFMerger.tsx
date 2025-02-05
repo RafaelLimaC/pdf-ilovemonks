@@ -22,6 +22,7 @@ const PDFMerger = () => {
     setFiles(files.filter((_, i) => i !== index));
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onDragEnd = (result: any) => {
     if (!result.destination) return;
 
