@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Merge from "./pages/Merge";
 import Split from "./pages/Split";
-import { Analytics } from "@vercel/analytics/react"
 import ImgToPDFPage from "./pages/ImgToPDF";
 
 const App = () => (
@@ -20,7 +19,6 @@ const App = () => (
         <Route path="/img-to-pdf" element={<ImgToPDFPage />} />
       </Routes>
     </BrowserRouter>
-    <Analytics/>
   </TooltipProvider>
 );
 
