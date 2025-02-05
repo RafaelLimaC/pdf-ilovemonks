@@ -1,12 +1,1 @@
-{
-  "crons": [
-    {
-      "path": "/merge",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/split",
-      "schedule": "0 0 * * *"
-    }
-  ]
-}
+{ "rewrites": [{ "source": "/(.*)", "destination": "/" }] }
