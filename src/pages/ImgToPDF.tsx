@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import HandleImgToPDF from "@/components/ImgToPDF";
+import HandleImgToPDF from "@/components/ImgToPdfService";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";

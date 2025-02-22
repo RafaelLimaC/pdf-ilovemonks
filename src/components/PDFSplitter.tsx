@@ -25,7 +25,6 @@ const PDFSplitter = () => {
 
     setFile(pdf);
 
-    // Get total pages
     try {
       const pages = await splitPDF(pdf, "1-1", true);
       setTotalPages(pages);
