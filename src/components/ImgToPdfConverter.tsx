@@ -40,7 +40,7 @@ const HandleImgToPDF = () => {
 
   return (
     <div className="space-y-6">
-      <FileDropzone onFilesDrop={handleFilesDrop} multiple={false} />
+      <FileDropzone onFilesDrop={handleFilesDrop} accept="image/*" multiple={false} />
     </div>
   );
 }

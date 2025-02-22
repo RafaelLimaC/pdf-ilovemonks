@@ -2,11 +2,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
-import Merge from "./pages/Merge";
-import Split from "./pages/Split";
+import Home from "./pages/HomePage";
+import Merge from "./pages/MergePage";
+import Split from "./pages/SplitPage";
 import { Analytics } from "@vercel/analytics/react"
-import ImgToPDFPage from "./pages/ImgToPDF";
+import ImgToPDFPage from "./pages/ImgToPdfPage";
 
 const App = () => (
   <TooltipProvider>
