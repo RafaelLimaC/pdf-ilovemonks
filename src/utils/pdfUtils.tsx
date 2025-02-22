@@ -1,4 +1,5 @@
 import { PDFDocument } from "pdf-lib";
+import JSZip from "jszip";
 
 export async function mergePDFs(files: File[]): Promise<Uint8Array> {
   const mergedPdf = await PDFDocument.create();
@@ -16,7 +17,8 @@ export async function mergePDFs(files: File[]): Promise<Uint8Array> {
 export async function splitPDF(
   file: File,
   pageRange: string,
-  countOnly: boolean = false
+  countOnly: boolean = false,
+  splitEachPage: boolean = false
 ): Promise<number> {
   const fileBuffer = await file.arrayBuffer();
   const pdf = await PDFDocument.load(fileBuffer);
@@ -29,26 +31,49 @@ export async function splitPDF(
     return end ? { start: start - 1, end } : { start: start - 1, end: start };
   });
 
-  for (const range of ranges) {
-    const newPdf = await PDFDocument.create();
-    const pages = await newPdf.copyPages(
-      pdf,
-      Array.from({ length: range.end - range.start }, (_, i) => range.start + i)
-    );
+  if (splitEachPage) {
+    const zip = new JSZip();
+    for (let i = 0; i < totalPages; i++) {
+      const newPdf = await PDFDocument.create();
+      const [page] = await newPdf.copyPages(pdf, [i]);
+      newPdf.addPage(page);
 
-    pages.forEach((page) => newPdf.addPage(page));
+      const pdfBytes = await newPdf.save();
+      zip.file(`page_${i + 1}.pdf`, pdfBytes);
+    }
 
-    const pdfBytes = await newPdf.save();
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
-    const url = URL.createObjectURL(blob);
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const url = URL.createObjectURL(zipBlob);
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = `split_${range.start + 1}-${range.end}.pdf`;
+    link.download = "split_pages.zip";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  } else {
+    for (const range of ranges) {
+      const newPdf = await PDFDocument.create();
+      const pages = await newPdf.copyPages(
+        pdf,
+        Array.from({ length: range.end - range.start }, (_, i) => range.start + i)
+      );
+
+      pages.forEach((page) => newPdf.addPage(page));
+
+      const pdfBytes = await newPdf.save();
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `split_${range.start + 1}-${range.end}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
   }
 
   return totalPages;

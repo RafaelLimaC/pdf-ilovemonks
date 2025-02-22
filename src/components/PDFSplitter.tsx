@@ -9,6 +9,7 @@ const PDFSplitter = () => {
   const [file, setFile] = useState<File | null>(null);
   const [pageRange, setPageRange] = useState("");
   const [totalPages, setTotalPages] = useState(0);
+  const [splitEachPage, setSplitEachPage] = useState(false);
 
   const handleFilesDrop = async (files: File[]) => {
     if (files.length > 1) {
@@ -37,13 +38,13 @@ const PDFSplitter = () => {
   const handleSplit = async () => {
     if (!file) return;
 
-    if (!pageRange.match(/^\d+(\s*-\s*\d+)?(\s*,\s*\d+(\s*-\s*\d+)?)*$/)) {
+    if (!splitEachPage && !pageRange.match(/^\d+(\s*-\s*\d+)?(\s*,\s*\d+(\s*-\s*\d+)?)*$/)) {
       toast.error("Formato inválido. Use: 1-3, 5, 7-9");
       return;
     }
 
     try {
-      await splitPDF(file, pageRange);
+      await splitPDF(file, pageRange, false, splitEachPage);
       toast.success("PDF separado com sucesso!");
     } catch (error) {
       toast.error("Erro ao separar o PDF");
@@ -74,6 +75,7 @@ const PDFSplitter = () => {
               onChange={(e) => setPageRange(e.target.value)}
               placeholder="Ex: 1-3, 5, 7-9"
               className="w-full ring-red-400 placeholder:text-gray-600"
+              disabled={splitEachPage}
             />
             <p className="text-xs text-gray-500">
               Use vírgulas para separar páginas ou intervalos (ex: 1-3, 5, 7-9).
@@ -81,10 +83,22 @@ const PDFSplitter = () => {
             </p>
           </div>
 
+          <div className="space-y-2">
+            <label className="flex items-center">
+              <input
+                type="checkbox"
+                checked={splitEachPage}
+                onChange={(e) => setSplitEachPage(e.target.checked)}
+                className="mr-2"
+              />
+              Separar cada página em um novo arquivo
+            </label>
+          </div>
+
           <Button
             onClick={handleSplit}
             className="w-full hover:bg-accent"
-            disabled={!pageRange}
+            disabled={!pageRange && !splitEachPage}
           >
             Separar PDF
           </Button>
