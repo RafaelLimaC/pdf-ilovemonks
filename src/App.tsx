@@ -7,6 +7,7 @@ import Merge from "./pages/MergePage";
 import Split from "./pages/SplitPage";
 import { Analytics } from "@vercel/analytics/react"
 import ImgToPDFPage from "./pages/ImgToPdfPage";
+import PdfToImagePage from "./pages/PdfToImgPage";
 
 const App = () => (
   <TooltipProvider>
@@ -18,6 +19,7 @@ const App = () => (
         <Route path="/merge" element={<Merge />} />
         <Route path="/split" element={<Split />} />
         <Route path="/img-to-pdf" element={<ImgToPDFPage />} />
+        <Route path="/pdf-to-img" element={<PdfToImagePage />} />
       </Routes>
     </BrowserRouter>
     <Analytics/>

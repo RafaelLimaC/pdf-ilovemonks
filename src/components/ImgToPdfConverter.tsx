@@ -16,9 +16,7 @@ const HandleImgToPDF = () => {
     }
 
     try {
-      console.log("Iniciando a conversão da imagem:", img);
       const pdf = await imgToPDF(img);
-      console.log("Conversão concluída com sucesso");
 
       const blob = new Blob([pdf], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);

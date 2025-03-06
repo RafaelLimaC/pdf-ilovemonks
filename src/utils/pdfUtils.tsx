@@ -1,5 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 import JSZip from "jszip";
+import * as pdf from "pdfjs-dist";
 
 export async function mergePDFs(files: File[]): Promise<Uint8Array> {
   const mergedPdf = await PDFDocument.create();
@@ -101,4 +102,63 @@ export async function imgToPDF(img: File): Promise<Uint8Array> {
   });
 
   return pdf.save();
+}
+
+export async function pdfToImg(file: File): Promise<{ imageUrl: string, imageName: string }> {
+  return new Promise((resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      
+      reader.onload = async function(event) {
+        const pdfData = event.target?.result;
+        if (!pdfData) {
+          reject(new Error("Failed to read PDF file"));
+          return;
+        }
+        
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        
+        if (!context) {
+          reject(new Error("Canvas context could not be created"));
+          return;
+        }
+        
+        pdf.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdf.version}/pdf.worker.min.js`
+        
+        const loadingTask = pdf.getDocument(new Uint8Array(pdfData as ArrayBuffer));
+        const pdfDocument = await loadingTask.promise;
+        
+        const page = await pdfDocument.getPage(1);
+        
+        const scale = 2; 
+        const viewport = page.getViewport({ scale });
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        
+        const renderContext = {
+          canvasContext: context,
+          viewport: viewport,
+        };
+        
+        await page.render(renderContext).promise;
+        
+        const imageUrl = canvas.toDataURL('image/png');
+        
+        const originalName = file.name.replace(/\.pdf$/i, '');
+        const imageName = `${originalName}.png`;
+        
+        resolve({ imageUrl, imageName });
+      };
+      
+      reader.onerror = function() {
+        reject(new Error("Error reading the file"));
+      };
+      
+      reader.readAsArrayBuffer(file);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }

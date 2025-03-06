@@ -32,6 +32,14 @@ const Header = () => {
         >
           IMG PARA PDF
         </Link>
+        <Link
+          to="/pdf-to-img"
+          className={`text-[14px] font-medium active:text-accent ${
+            location.pathname === "/pdf-to-img" ? "text-accent" : "text-[#161616]"
+          }`}
+        >
+          PDF PARA IMG
+        </Link>
       
       </nav>
     </header>

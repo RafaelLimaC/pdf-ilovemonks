@@ -1,10 +1,10 @@
 import Header from "@/components/Header";
-import HandleImgToPDF from "@/components/ImgToPdfConverter";
+import HandlePDFToImg from "@/components/PdfToImgConverter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const ImgToPDFPage = () => {
+const PdfToImagePage = () => {
   const navigate = useNavigate();
 
   return (
@@ -21,18 +21,18 @@ const ImgToPDFPage = () => {
         </Button>
 
         <h1 className="text-xj font-bold text-center text-secondary">
-          Converter imagens em PDF
+          Converter PDF em imagens
         </h1>
         <p className="text-center text-2xl font-light text-muted max-w-3xl m-auto mb-10">
-          Transforme suas imagens JPG/PNG para arquivos PDF.
+          Transforme seu arquivo PDF em uma imagem PNG.
         </p>
 
         <div className="max-w-3xl mx-auto">
-          <HandleImgToPDF />
+          <HandlePDFToImg />
         </div>
       </div>
     </div>
-  )
-}   
+  );
+};
 
-export default ImgToPDFPage;
+export default PdfToImagePage;
