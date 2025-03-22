@@ -20,7 +20,7 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="mx-auto flex max-w-3xl gap-8">
+          <div className="mx-auto flex flex-col sm:flex-row max-w-3xl gap-8">
             <Button
               onClick={() => navigate("/merge")}
               className="h-20 w-full rounded-xl bg-accent text-2xl hover:bg-accent-foreground"
